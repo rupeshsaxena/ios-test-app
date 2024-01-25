@@ -26,6 +26,10 @@ pipeline {
         FASTLANE_PATH = sh(script: 'echo $HOME/.fastlane', returnStdout: true).trim()
     }
 
+    options {
+        skipDefaultCheckout(true)
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -34,37 +38,30 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        // stage('Install Dependencies') {
+        //     steps {
+        //         // Install necessary dependencies using Homebrew
+        //         script {
+        //             sh 'brew install fastlane'
+        //         }
+        //     }
+        // }
+
+        stage('Dot Files Check') {
             steps {
-                // Install necessary dependencies using Homebrew
                 script {
-                    sh 'brew install fastlane'
+                    sh "if [ -e .gitignore ]; then echo '.gitignore found'; else echo 'no .gitignore found' && exit 1; fi"
                 }
             }
         }
 
-        stage('Build and Test') {
-            steps {
-                // Build and test your iOS project
-                script {
-                    sh "xcodebuild clean build -workspace SimpleCart.xcworkspace -scheme SimpleCartTest"
+        stage {
+            script {
+                if (env.BUILD_VARIANT == 'Debug_Scan_Only') {
+                    stage ('Scan - Build only') {
+                        sh "xcodebuild -workspace ${env.APP_WORKSPACE} -scheme ${env.APP_SCHEME} -sdk iphoneos -configuration \"${env.APP_BUILD_CONFIG}\" CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=NO CODE_SIGN_ENTITLEMENTS=\"\" CODE_SIGNING_ALLOWED=\"NO\" build"
+                    }
                 }
-            }
-        }
-
-        stage('Deploy with Fastlane') {
-            steps {
-                // Use Fastlane to deploy the application
-                script {
-                    sh "fastlane ios beta"
-                }
-            }
-        }
-
-        stage('Archive Artifacts') {
-            steps {
-                // Archive build artifacts
-                archiveArtifacts artifacts: '**/build/*.ipa', fingerprint: true
             }
         }
     }
