@@ -14,8 +14,8 @@ pipeline {
         APP_NAME = 'SimpleCart'
         BUILD_NAME = 'SimpleCart'
         APP_TARGET = 'SimpleCart'
-        APP_PROJECT = 'SimpleCart.xcodeproj'
+        APP_PROJECT = 'SimpleCart/SimpleCart.xcodeproj'
         APP_WORKSPACE = 'SimpleCart.xcworkspace'
-        APP_TEST_SCHEME = 'SimpleCartTest'
+        APP_TEST_SCHEME = 'SimpleCart/SimpleCartTest'
     }
 }
