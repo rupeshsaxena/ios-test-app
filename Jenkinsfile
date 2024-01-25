@@ -38,15 +38,6 @@ pipeline {
             }
         }
 
-        // stage('Install Dependencies') {
-        //     steps {
-        //         // Install necessary dependencies using Homebrew
-        //         script {
-        //             sh 'brew install fastlane'
-        //         }
-        //     }
-        // }
-
         stage('Dot Files Check') {
             steps {
                 script {
@@ -58,11 +49,7 @@ pipeline {
         stage('Building') {
             steps {
                 script {
-                    if (env.BUILD_VARIANT == 'Debug_Scan_Only') {
-                        stage ('Scan - Build only') {
-                            sh "xcodebuild -workspace ${env.APP_WORKSPACE} -scheme ${env.APP_SCHEME} -sdk iphoneos -configuration \"${env.APP_BUILD_CONFIG}\" CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=NO CODE_SIGN_ENTITLEMENTS=\"\" CODE_SIGNING_ALLOWED=\"NO\" build"
-                        }
-                    }
+                    sh "xcodebuild -workspace ${env.APP_WORKSPACE} -scheme ${env.APP_SCHEME} -sdk iphoneos -configuration \"${env.APP_BUILD_CONFIG}\" CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=NO CODE_SIGN_ENTITLEMENTS=\"\" CODE_SIGNING_ALLOWED=\"NO\" build"
                 }
             }
         }
