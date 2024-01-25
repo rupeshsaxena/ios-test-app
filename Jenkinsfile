@@ -45,7 +45,7 @@ pipeline {
             steps {
                 // Build and test your iOS project
                 script {
-                    sh "xcodebuild clean build -workspace YourApp.xcworkspace -scheme YourScheme"
+                    sh "xcodebuild clean build -workspace SimpleCart.xcworkspace -scheme SimpleCartTest"
                 }
             }
         }
