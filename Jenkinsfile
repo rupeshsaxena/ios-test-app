@@ -1,5 +1,7 @@
+import groovy.util.*;
+
 pipeline {
-    agent { label 'mac-mini-slave' }
+    agent any
 
     parameters { 
         choice(
